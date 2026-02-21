@@ -24,8 +24,8 @@ const UserModel = {
     return result.insertId
 },
 
-async update(user){
-    const {id, nombre, email, clave, id_rol} = user;
+async update(user, id){
+    const {nombre, email, clave, id_rol} = user;
     const query = 
     `
     UPDATE usuarios 
@@ -33,7 +33,7 @@ async update(user){
     WHERE id_usuario = ? 
     `
 
-    const [result] = await db.execute(query, [nombre, email, clave, id_rol])
+    const [result] = await db.execute(query, [nombre, email, clave, id_rol, id])
     return result.affectedRows;
 },
 

@@ -23,7 +23,7 @@ router.post('/', restrictTo('Crear'), userController.create);
 router.put('/:id', restrictTo('Actualizar'), userController.update);
 
 //4. Eliminar usuario (Solo Admin/Eliminar)
-// PUT /api/v1/users/:id
+// DELETE /api/v1/users/:id
 router.put('/:id', restrictTo('Eliminar'), userController.delete);
 
 module.exports = router;
