@@ -1,5 +1,4 @@
 const express = require('express');
-const UserController = require('../controllers/userController');
 const {protect} = require('../middlewares/authMiddleware')
 const {restrictTo} = require('../middlewares/roleMiddleware');
 const userController = require('../controllers/userController');
@@ -24,6 +23,6 @@ router.put('/:id', restrictTo('Actualizar'), userController.update);
 
 //4. Eliminar usuario (Solo Admin/Eliminar)
 // DELETE /api/v1/users/:id
-router.put('/:id', restrictTo('Eliminar'), userController.delete);
+router.delete('/:id', restrictTo('Eliminar'), userController.delete);
 
 module.exports = router;

@@ -19,7 +19,7 @@ const UserService = {
 
         //2. Encriptar la contraseña (SEGURIDAD OBLIGATORIA)
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt(userData.clave, salt) 
+        const hashedPassword = await bcrypt.hash(userData.clave, salt) 
 
         //3. Preparar objeto para el modelo
         const newUser  = {
@@ -48,7 +48,7 @@ const UserService = {
         let hashedkey = userExists.clave; //Por defecto usuamos la que ya tiene
         if(updateData.clave && updateData.clave.trim() !== ''){
             const salt = await bcrypt.genSalt(10);
-            hashedkey = await bcrypt(updateData.clave, salt)
+            hashedkey = await bcrypt.hash(updateData.clave, salt)
         }
 
         // 4. Construir un objeto con valores actualizados o existentes

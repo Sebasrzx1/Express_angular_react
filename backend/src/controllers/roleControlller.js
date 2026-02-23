@@ -17,7 +17,7 @@ exports.getAllRoles = catchAsync(async(req, res, next) => {
         })
     );
 
-    res.tatus(200).json({
+    res.status(200).json({
         status: 'success',
         results: rolesWithPermisssions.length,
         data: rolesWithPermisssions
@@ -30,7 +30,7 @@ exports.getAllRolesById = catchAsync(async(req, res, next) => {
     const role = await RoleModel.findById(id)
 
     if(!role){
-        throw AppError('No se encontrol el rol con ese ID', 404)
+        throw new AppError('No se encontrol el rol con ese ID', 404)
     }
 
 

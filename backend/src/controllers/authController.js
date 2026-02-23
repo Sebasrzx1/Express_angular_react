@@ -1,11 +1,7 @@
 const AuthService = require("../services/authService");
-const {
-  validateRegister,
-  validateLogin,
-} = require("../validations/authValidator");
+const {validateRegister, validateLogin} = require("../validations/authValidator");
 const AppError = require("../errors/AppError");
 const httpStatus = require("../constants/httpStatus");
-const UserService = require("../services/userService");
 
 const AuthController = {
   //Controlador para el registro de usuarios

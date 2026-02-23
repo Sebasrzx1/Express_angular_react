@@ -9,7 +9,7 @@ const NegocioService = {
     },
 
     async getNegocioById(id){
-        const negocio = await NegocioModel.getNegocioById(id);
+        const negocio = await NegocioModel.findById(id);
 
         if(!negocio){
             throw new AppError('Negocio no encontrado', httpStatus.NOT_FOUND)
@@ -42,7 +42,7 @@ const NegocioService = {
         }
 
         //Validar email único si se esta cambiando
-        if(negocioData.email && negocioData.email === negocioExists.email){
+        if(negocioData.email && negocioData.email !== negocioExists.email){
             const negocios = await NegocioModel.findAll();
             const emailExists = negocios.some(n => n.email === negocioData.email && n.id_negocio !== id)
 

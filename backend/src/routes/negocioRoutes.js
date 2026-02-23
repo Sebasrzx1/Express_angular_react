@@ -14,9 +14,9 @@ router.get('/', restrictTo('Leer'), negocioController.getAllNegocios)
 router.get('/:id', restrictTo('Leer'), negocioController.getNegocioById)
 
 // POST /api/negocios/:id - crear negocio (requiere permiso crear)
-router.post('/:id', restrictTo('Crear'), negocioController.createNegocio)
+router.post('/', restrictTo('Crear'), negocioController.createNegocio)
 
 // PUT /api/negocios/:id - Actualizar negocio (requiere permiso Actualizar)
-router.post('/:id', restrictTo('Actualizar'), negocioController.updateNegocio)
+router.put('/:id', restrictTo('Actualizar'), negocioController.updateNegocio)
 
 module.exports = router;

@@ -16,7 +16,7 @@ exports.getAllPermisos = catchAsync(async(req, res, next)=>{
 // GET /api/permisos/:id - Obtener un permiso por ID
 exports.getAllPermisoById = catchAsync(async(req, res, next)=>{
     const {id} = req.params;
-    const permiso = await PermisoModel.findById();
+    const permiso = await PermisoModel.findById(id);
 
     if(!permiso){
         throw next(new AppError('No se encontro el permiso con ese ID', 400))

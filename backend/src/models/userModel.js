@@ -24,8 +24,8 @@ const UserModel = {
     return result.insertId
 },
 
-async update(user, id){
-    const {nombre, email, clave, id_rol} = user;
+async update(user){
+    const {id, nombre, email, clave, id_rol} = user;
     const query = 
     `
     UPDATE usuarios 
@@ -59,12 +59,9 @@ async findAll(){
 },
 
 async deleteById(id){
-    const query = `
-    DELETE FROM usuarios WHERE id_usuario = ?
-    `
-
-    const [rows] = await db.execute(query, [id])
-    return rows;
+    const query = `DELETE FROM usuarios WHERE id_usuario = ?`
+    const [result] = await db.execute(query, [id])
+    return result.affectedRows; //Retorna numero de filas borradas
 }
 };
 

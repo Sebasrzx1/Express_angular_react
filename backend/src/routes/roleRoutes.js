@@ -9,13 +9,13 @@ router.use(protect);
 router
   .route("/")
   .get(restrictTo("Leer"), roleController.getAllRoles)
-  .get(restrictTo("Crear"), roleController.createRole);
+  .post(restrictTo("Crear"), roleController.createRole);
 
 router
   .route("/:id")
   .get(restrictTo("Leer"), roleController.getAllRolesById)
-  .get(restrictTo("Actualizar"), roleController.updateRole)
-  .get(restrictTo("Eliminar"), roleController.deleteRole);
+  .put(restrictTo("Actualizar"), roleController.updateRole)
+  .delete(restrictTo("Eliminar"), roleController.deleteRole);
 
 router.put('/:id/permisos', restrictTo('Actualizar'), roleController.assignPermissions);
 

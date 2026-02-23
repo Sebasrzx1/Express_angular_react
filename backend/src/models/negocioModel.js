@@ -35,15 +35,14 @@ const NegocioModel = {
         FROM negocio
         `;
 
-    const [rows] = db.execute(query);
+    const [rows] = await db.execute(query);
 
     //Parse JSON fields safely
-    rows.array.forEach((row) => {
+    rows.forEach(row => {
       if (row.redes_sociales) {
         try {
           //Solo parsear si es string.
-          rows.redes_sociales =
-            typeof row.redes_sociales === "string"
+          rows.redes_sociales = typeof row.redes_sociales === "string"
               ? JSON.parse(row.redes_sociales)
               : row.redes_sociales;
         } catch (error) {
