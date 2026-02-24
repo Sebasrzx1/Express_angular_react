@@ -1,0 +1,34 @@
+<header class="header">
+    <div class="header-left">
+        <!--Logo dinamico: muestra imagen si existe, si no, cuadro teal-->
+        <div class="logo" *ngIf="!logoNegocio"></div>
+        <img *ngIf="logoNegocio" [src]="logoNegocio" alt="Logo" class="logo-img"/>
+
+        <!-- Mostrar el tirulo solo si es administrador -->
+         <h1 *ngIf = "usuario?.rol_nombre === 'administrador'">Panel Administrativo de Usuarios</h1>
+         <h1 *ngIf = "usuario?.rol_nombre !== 'administrador'">Bienvenido, {{usuario?.nombre}}</h1>
+    </div>
+
+    <div class="header-right">
+        <a routerLink="/perfil" class="perfil-link">
+            <i class="bi bi-person-circle"></i>
+            <span>Mi perfil</span>
+        </a>
+        <span class="user-name">{{usuario?.nombre || 'Usuario'}}</span>
+        <span class="user-role">{{usuario?.rol_nombre || 'Rol desconocido'}}</span>
+        <button class="logout-btn" (click)="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+</header>
+
+<!-- Navbar visible solo para administradores -->
+<nav class="navbar" *ngIf = "usuario?.rol_nombre === 'Administrador'">
+    <a routerLink = "/usuarios" routerLinkActive = "active">Usuarios</a>
+    <a routerLink = "/roles" routerLinkActive = "active">Usuarios</a>
+    <a routerLink = "/permisos" routerLinkActive = "active">Usuarios</a>
+    <a routerLink = "/negocio" routerLinkActive = "active">Usuarios</a>
+</nav>
+
+<!--Contenido principal para TODOS los usuarios-->
+<main class="content">
+    <router-outlet></router-outlet>
+</main>
