@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsuariosService } from '../../services/usuarios/usuarios';
 import { RolesService } from '../../services/roles/roles';
-import { email } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-usuarios',
@@ -84,7 +83,7 @@ export class UsuariosComponent {
 
     this.rolesSerivce.obtenerRolPorId(idRol).subscribe({
       next: (rol) => {
-        this.permisosRolesSeleccionado = rol.permisosDisponibles
+        this.permisosRolesSeleccionado = rol.permisos
           ? rol.permisos.map((p: any) => p.nombre)
           : [];
       },
@@ -99,7 +98,7 @@ export class UsuariosComponent {
       return;
     }
     // Validar Email
-    if (!this.usuarioForm.email || this.usuarioForm.email.includes('@')) {
+    if (!this.usuarioForm.email || !this.usuarioForm.email.includes('@')) {
       alert('Ingresa un email válido');
       return;
     }
@@ -123,8 +122,8 @@ export class UsuariosComponent {
     this.usuariosService.agregarUsuario(usuario).subscribe({
       next: () => {
         alert('Usuario creado correctamente');
-        this.cargarUsuarios;
-        this.cerrarModal;
+        this.cargarUsuarios();
+        this.cerrarModal();
       },
       error: (err) => {
         console.error('Error al resgitrar usuario', err);
@@ -141,7 +140,7 @@ export class UsuariosComponent {
       return;
     }
     // Validar Email
-    if (!this.usuarioForm.email || this.usuarioForm.email.includes('@')) {
+    if (!this.usuarioForm.email || !this.usuarioForm.email.includes('@')) {
       alert('Ingresa un email válido');
       return;
     }
@@ -155,18 +154,41 @@ export class UsuariosComponent {
     const usuario: any = {
       nombre: this.usuarioForm.nombre,
       email: this.usuarioForm.email,
-      id_rol: Number(this.usuarioForm.id_rol)
+      id_rol: Number(this.usuarioForm.id_rol),
     };
 
     //Solo incluir clave si se ha modificado
-    if(this.usuarioForm.clave && this.usuarioForm.clave.trim()!==''){
+    if (this.usuarioForm.clave && this.usuarioForm.clave.trim() !== '') {
       //validar longitud minima
-      if(this.usuarioForm.clave.length < 6){
-        alert('La contraseña debe tener al menos 6 caracteres')
+      if (this.usuarioForm.clave.length < 6) {
+        alert('La contraseña debe tener al menos 6 caracteres');
         return;
       }
       usuario.clave = this.usuarioForm.clave;
     }
+    this.usuariosService.actualizarUsuario(this.usuarioForm.id_usuario, usuario).subscribe({
+      next: () => {
+        alert('Usuario actualizado correctamente');
+        this.cargarUsuarios();
+        this.cerrarModal();
+      },
+      error: (err) => {
+        console.error('Error al actualizar usuario', err);
+        const errorMsg = err.error?.message ||'Error al actualizar usuario';
+        alert(errorMsg)
+      }
+    });
   }
-  this.usuariosService
+
+  eliminarUsuario(){
+    if(!confirm(`¿Seguro que deseas eliminar a ${this.usuarioForm.nombre}?`)) return;
+
+    this.usuariosService.eliminarUsuario(this.usuarioForm.id_usuario).subscribe({
+      next: () => {
+        this.cargarUsuarios();
+        this.cerrarModal();
+      },
+      error: (err) => console.error('Error al eliminar usuario', err)
+    })
+  }
 }

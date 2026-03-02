@@ -1,7 +1,7 @@
 <div>
     <h2>Iniciar Sesión</h2>
-        <form action="">
-            <input type="email" placeholder="Correo" [(ngModel)]="correo" name="correo" required></form>
+        <form (ngSubmit) = "iniciarSesion()">
+            <input type="email" placeholder="Correo" [(ngModel)]="correo" name="correo" required>
             <input type="password" placeholder="Contraseña" [(ngModel)]="clave" name="clave" required>
             <button type="submit">Ingresar</button>
         </form>
