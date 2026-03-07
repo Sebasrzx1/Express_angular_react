@@ -1,1 +1,64 @@
-<p>permisos works!</p>
+<div class="permisos-container">
+  <div class="titulo-container">
+    <h2 class="titulo"><i class="bi bi-key"></i>Lista de Permisos</h2>
+    <button class="btn-add" (click)="abrirModalCrear()">Crear Permisos</button>
+  </div>
+
+  <div class="permiso-card" *ngFor="let permiso of permisos">
+    <div class="permiso-header">
+      <div>
+        <h3 class="permiso-nombre">{{ permiso.nombre }}</h3>
+        <p class="permiso-descripcion">
+          {{ permiso.descripcion || 'Sin descripción asignada' }}
+        </p>
+      </div>
+
+      <div class="permiso-acciones">
+        <button (click)="abrirModalEditar(permiso)" class="btn-icon">✏️</button>
+        <button (click)="eliminarPermiso(permiso.id_permiso)" class="btn-icon eliminar">🗑️</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarModal">
+  <div class="modal">
+    <h2>{{ esEdicion ? 'Editar Permiso' : 'Crear Nuevo Permiso' }}</h2>
+    <button (click)="cerrarModal()" class="btn-close">X</button>
+
+    <p class="modal-sub">
+      {{
+        esEdicion
+          ? 'Modifica los detalles del permiso seleccionado'
+          : 'Define un nuevo permiso para asignar a los roless del sistema.'
+      }}
+    </p>
+
+    <form (ngSubmit)="guardarCambios()" class="modal-form">
+      <label>
+        Nombre del Permiso
+        <input
+          [(ngModel)]="permisoSeleccionado.nombre"
+          name="nombre"
+          required
+          type="text"
+          placeholder="Ej: Crear, Leer, Actualizar, Eliminar"
+        />
+      </label>
+
+      <label>
+        descripcion
+        <textarea
+          [(ngModel)]="permisoSeleccionado.descripcion"
+          name="descripcion"
+          rows="3"
+          placeholder="Describe qué permite ahcer este permiso..."
+        ></textarea>
+      </label>
+
+      <button type="submit" class="btn-submit">
+        {{ esEdicion ? 'Actualizar' : 'Crear Permiso' }}
+      </button>
+    </form>
+  </div>
+</div>

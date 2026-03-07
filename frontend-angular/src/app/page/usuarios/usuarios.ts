@@ -16,7 +16,7 @@ export class UsuariosComponent {
   roles: any[] = [];
   mostrarModal = false;
   modoEdicion = false;
-  permisosRolesSeleccionado: any[] = [];
+  permisosRolSeleccionado: any[] = [];
 
   usuarioForm: any = {
     id_usuario: null,
@@ -65,7 +65,7 @@ export class UsuariosComponent {
     } else {
       this.modoEdicion = false;
       this.usuarioForm = { id_usuario: null, nombre: '', email: '', clave: '', id_rol: null };
-      this.permisosRolesSeleccionado = [];
+      this.permisosRolSeleccionado = [];
     }
     this.mostrarModal = true;
   }
@@ -73,7 +73,7 @@ export class UsuariosComponent {
   cerrarModal() {
     this.mostrarModal = false;
     this.usuarioForm = { id_usuario: null, nombre: '', email: '', clave: '', id_rol: null };
-    this.permisosRolesSeleccionado = [];
+    this.permisosRolSeleccionado = [];
   }
 
   cargarPermisos() {
@@ -83,7 +83,7 @@ export class UsuariosComponent {
 
     this.rolesSerivce.obtenerRolPorId(idRol).subscribe({
       next: (rol) => {
-        this.permisosRolesSeleccionado = rol.permisos
+        this.permisosRolSeleccionado = rol.permisos
           ? rol.permisos.map((p: any) => p.nombre)
           : [];
       },

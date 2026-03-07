@@ -1,9 +1,9 @@
-<div>
+<div class="header-usuarios">
   <h2>Gestión de Usuarios</h2>
   <button class="btn-agregar" (click)="abrirModal()">Crear Usuario</button>
 </div>
 
-<table>
+<table class="usuarios-table" *ngIf="usuarios.length > 0">
   <thead>
     <tr>
       <th>Usuario</th>
@@ -16,12 +16,13 @@
     <tr *ngFor="let usuario of usuarios" (click)="abrirModal(usuario)">
       <td>
         <div class="usuario-info">
-          <strong>{{ usuario.nombre }}</strong>
+          <strong>{{ usuario.nombre }}</strong
+          ><br />
         </div>
       </td>
       <td>{{ usuario.email }}</td>
       <td>
-        <span class="rol-badge" [ngClass]="(usuario.rol || 'Sin-rol').toLowerCase()">
+        <span class="rol-badge" [ngClass]="(usuario.rol || 'sin-rol').toLowerCase()">
           {{ usuario.rol || 'Sin rol' }}
         </span>
       </td>
@@ -33,16 +34,63 @@
 <div class="modal-backdrop" *ngIf="mostrarModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 *ngIf="!modoEdicion">Crear nuevo usuario</h3>
+      <h3 *ngIf="!modoEdicion">Crear Nuevo Usuario</h3>
       <h3 *ngIf="modoEdicion">Editar Usuario</h3>
-      <button class="close-btn" (click)="cerrarModal()">X</button>
+      <button class="close-btn" (click)="cerrarModal()">×</button>
     </div>
 
     <form
       #usuarioFormRef="ngForm"
       (ngSubmit)="modoEdicion ? actualizarUsuario() : registrarUsuario()"
     >
-      <div></div>
+      <div class="form-grid">
+        <div>
+          <label>Nombre (mínimo 3 caracteres)</label>
+          <input
+            type="text"
+            [(ngModel)]="usuarioForm.nombre"
+            name="nombre"
+            required
+            minlength="3"
+            #nombreInput="ngModel"
+          />
+          <small class="error-message" *ngIf="nombreInput.invalid && nombreInput.touched">
+            El nombre debe tener al menos 3 caracteres
+          </small>
+        </div>
+        <div class="full-width">
+          <label>Rol</label>
+          <select
+            [(ngModel)]="usuarioForm.id_rol"
+            name="id_rol"
+            (change)="cargarPermisos()"
+            required
+            #rolInput="ngModel"
+          >
+            <option [ngValue]="null">Selecciona un rol</option>
+            <option *ngFor="let rol of roles" [ngValue]="rol.id_rol">{{ rol.nombre }}</option>
+          </select>
+          <small class="error-message" *ngIf="rolInput.invalid && rolInput.touched">
+            Debes seleccionar un rol
+          </small>
+        </div>
+      </div>
+      <div class="permisos" *ngIf="permisosRolSeleccionado.length > 0">
+        <label>Permisos del rol</label>
+        <ul class="permisos-lista">
+          <li *ngFor="let permiso of permisosRolSeleccionado">{{permiso}}</li>
+        </ul>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-submit" [disabled]="usuarioFormRef.invalid">
+          {{modoEdicion? 'Guardar cambios':'Crear Usuario'}}
+        </button>
+
+        <button *ngIf="modoEdicion" type="button" class="btn-delete" (click)="eliminarUsuario()">
+          Eliminar Usuario
+        </button>
+      </div>
     </form>
   </div>
 </div>

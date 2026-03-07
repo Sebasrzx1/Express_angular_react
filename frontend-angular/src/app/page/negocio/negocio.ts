@@ -11,7 +11,7 @@ import {FormsModule} from '@angular/forms'
   styleUrl: './negocio.css'
 })
 export class NegocioComponent{
-  negocio: any[] = [];
+  negocios: any[] = [];
   mostrarModal = false;
   modoEdicion = false;
   subiendoImagen = false;
@@ -40,7 +40,7 @@ export class NegocioComponent{
 
   cargarNegocios(){
     this.negocioService.obtenerNegocios().subscribe({
-      next: (data) => this.negocio = data,
+      next: (data) => this.negocios = data,
       error: (err) => console.error ('Error al obtener negocios', err)
     });
   }

@@ -34,10 +34,16 @@ export class PermisosComponent {
     });
   }
 
-  abrirModalCrear(permiso: any){
+  abrirModalCrear(){
     this.esEdicion = true;
-    this.permisoSeleccionado = {...permiso };
+    this.permisoSeleccionado = {id_permiso: null, nombre: '', descripcion: '' };
     this.mostrarModal = true;
+  }
+
+  abrirModalEditar(permiso: any){
+    this.esEdicion = true;
+    this.permisoSeleccionado = {...permiso};
+    this.mostrarModal = true
   }
 
   cerrarModal(){

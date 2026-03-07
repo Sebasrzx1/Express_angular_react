@@ -1,1 +1,137 @@
-<p>perfil works!</p>
+<div class="perfil-container">
+    <div class="perfil-header">
+        <h2><i class="bi bi-person-circle"></i>Mi perfil</h2>
+    </div>
+
+    <div class="perfil-card">
+        <div class="perfil-avatar">
+            <div class="avatar-circle">
+                {{ usuario.nombre.chartAt(0).toUpperCase() }}
+            </div>
+        </div>
+
+        <div class="perfil-info">
+            <h3>{{ usuario.nombre }}</h3>
+            <p class="rol-badge">{{ usuario.rol_nombre || 'Sin rol asignado'}}</p>
+            
+            <div class="info-section">
+                <div class="info-item">
+                    <i class="bi bi-envelope"></i>
+                    <div>
+                        <label> Correo electronico </label>
+                        <p>{{usuario.email}}</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="bi bi-shield-check"></i>
+                        <div>
+                            <label> Rol del Sistema </label>
+                            <p>{{usuario.rol_nombre}}</p>
+                        </div>
+                </div>
+            </div>
+
+            <button class="btn-edit" (click)="abrirModalEditar()" type="button">
+                <i class="bi bi-info-circle"></i> Editar Mi perfil
+            </button>
+        </div>
+    </div>
+
+    <div class="info-message">
+        <i class="bi bi-info-circle"></i>
+        <p>Desde aquí puedes actualizar tu información personal y cambiar tu contraseña.</p>
+    </div>
+</div>
+<!-- Modal de Edición -->
+<div class="modal-backdrop" *ngIf="mostrarModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2><i class="bi bi-pencil-square"></i>Editar mi perfil</h2>
+            <button (click)="cerrarModal()" class="btn-close">X</button>
+        </div>
+
+        <form #perfilFormRef="ngForm" (ngSubmit)="actualizarPerfil()" class="modal-form">
+            
+            <!-- nombre -->
+            <div class="form-group">
+                <label>Nombre Completo</label>
+                <input 
+                type="text"
+                [(ngModel)]="perfilForm.nombre"
+                name="nombre"
+                minlength="3"
+                #nombreInput="ngModel"
+                placeholder="Ingresa tu nombre completo">
+
+                <small class="error-message" *ngIf="nombreInput.invalid && nombreInput.touched">
+                    El nombre es obligatorio (Minimo 3 caracteres)
+                </small>
+            </div>
+
+            <!-- email -->
+             <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input 
+                type="email"
+                [(ngModel)]="perfilForm.email"
+                name="email"
+                required
+                email
+                #emailInput="ngModel"
+                placeholder="correo@ejemplo.com">
+                <small class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+                    Ingresa un correo válido.
+                </small>
+             </div>
+
+             <!-- Botón para mostrar cambio de contraseña -->
+            <div class="password-toggle">
+                <button
+                type="button"
+                class="btn-link"
+                (click)="toggleCambioPassword()"
+                ><i class="bi bi-key"></i>
+                {{mostrarCambioPassword ? 'Cancelar cambio de contraseña' : '¿Deseas cambiar tu contraseña?'}}
+                </button>
+            </div>
+
+            <!-- Campos de contraseña (solo si se activa) -->
+             <div class="password-section">
+                <div class="form-group">
+                    <label>Nueva contraseña</label>
+                    <input 
+                    type="password"
+                    [(ngModel)]="perfilForm.clave"
+                    name="clave"
+                    [required]="mostrarCambioPassword"
+                    minlength="6"
+                    #claveInput="ngModel"
+                    placeholder="Mínimo 6 caracteres">
+                    <small class="error-message" *ngIf="claveInput.invalid && claveInput.touched">
+                        La contraseña debe tener al menos 6 caracteres
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar Nueva Contraseña</label>
+                    <input 
+                    type="password"
+                    [(ngModel)]="mostrarCambioPassword"
+                    #confirmarInput="ngModel"
+                    placeholder="Repite la contraseña">
+
+                    <small class="error-message" *ngIf="perfilForm.clave !== perfilForm.ConfirmarClave && confirmarInput.touched">
+                        Las contraseñas no coinciden
+                    </small>
+                </div>
+             </div>
+
+             <button
+             type="submit"
+             [disabled]="perfilFormRef.invalid || (mostrarCambioPassword && perfilForm.clave !== perfilForm.ConfirmarClave)">
+             <i class="bi bi-check-circle"></i> Guardar Cambios
+            </button>
+        </form>
+    </div>
+</div>

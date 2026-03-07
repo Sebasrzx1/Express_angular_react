@@ -8,7 +8,7 @@ import { PermisosService } from '../../services/permisos/permisos';
   selector: 'app-roles',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './roles.html',
+  templateUrl:'./roles.html',
   styleUrl: './roles.css',
 })
 export class RolesComponent {
